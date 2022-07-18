@@ -14,9 +14,10 @@ ansible [core 2.13.1]
   jinja version = 3.1.2
   libyaml = True
 ```
-2. Создайте свой собственный публичный репозиторий на github с произвольным именем.
+2. Создайте свой собственный публичный репозиторий на github с произвольным именем.  
+https://github.com/AlexHBR/08-ansible-01-base/tree/main/playbook
 
-3. Скачайте [playbook](./playbook/) из репозитория с домашним заданием и перенесите его в свой репозиторий.
+4. Скачайте [playbook](./playbook/) из репозитория с домашним заданием и перенесите его в свой репозиторий.
 
 ## Основная часть
 1. Попробуйте запустить playbook на окружении из `test.yml`, зафиксируйте какое значение имеет факт `some_fact` для указанного хоста при выполнении playbook'a.
@@ -113,13 +114,15 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 
 ```
 5. Добавьте факты в `group_vars` каждой из групп хостов так, чтобы для `some_fact` получились следующие значения: для `deb` - 'deb default fact', для `el` - 'el default fact'.
+
 ```commandline
+вывод после исправления
 root@serverd:/home/pp/.ansible/playbook# cat group_vars/deb/examp.yml
 ---
-  some_fact: "deb"
+  some_fact: "el default fact"
 root@serverd:/home/pp/.ansible/playbook# cat group_vars/el/examp.yml
 ---
-  some_fact: "el"
+  some_fact: "el default fact"
 ```
 6. Повторите запуск playbook на окружении `prod.yml`. Убедитесь, что выдаются корректные значения для всех хостов.
 ```commandline
@@ -178,6 +181,13 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 9. Посмотрите при помощи `ansible-doc` список плагинов для подключения. Выберите подходящий для работы на `control node`.
+```commandline
+root@serverd:/# ansible-doc -t connection -l
+...
+local                          execute on controller
+...
+
+```
 10. В `prod.yml` добавьте новую группу хостов с именем  `local`, в ней разместите localhost с необходимым типом подключения.
 >
 11. Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь что факты `some_fact` для каждого из хостов определены из верных `group_vars`.
